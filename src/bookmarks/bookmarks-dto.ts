@@ -20,7 +20,4 @@ export class BookmarkDto {
   @IsOptional()
   @IsString()
   category?: string;
-
-  @IsNotEmpty()
-  userId: number;
 }

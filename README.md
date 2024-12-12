@@ -28,3 +28,8 @@ Run the application:
 
 npm run start
 
+
+Run tests:
+
+npm run test
+

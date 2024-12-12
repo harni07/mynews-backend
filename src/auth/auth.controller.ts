@@ -29,7 +29,7 @@ export class AuthController {
     @Request() req,
     @Body('first_name') firstName: string,
     @Body('last_name') lastName: string,
-  ): Promise<any> {
+  ): Promise<User> {
     const { id } = req.user;
     const updatedUser = await this.authService.updateUser(id, {
       firstName,

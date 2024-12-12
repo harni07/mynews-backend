@@ -6,7 +6,6 @@ import {
   Param,
   Body,
   UseGuards,
-  Patch,
 } from '@nestjs/common';
 import { JwtAuthGuard } from '../auth/jwt-auth-guard';
 import { GetUser } from '../users/user.decorator';

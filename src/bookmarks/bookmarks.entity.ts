@@ -14,14 +14,14 @@ export class Bookmark {
   @Column()
   url: string;
 
-  @Column()
-  urlToImage: string;
+  @Column({ nullable: true })
+  urlToImage?: string;
 
-  @Column()
-  author: string;
+  @Column({ nullable: true })
+  author?: string;
 
-  @Column()
-  category: string;
+  @Column({ nullable: true })
+  category?: string;
 
   @CreateDateColumn()
   createdAt: Date;

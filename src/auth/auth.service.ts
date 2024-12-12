@@ -23,17 +23,19 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string, pass: string): Promise<any> {
-    email = email.toLowerCase();
+  async validateUser(email: string, pass: string): Promise<Omit<User, 'password'> | null> {
+    const normalizedEmail  = email.toLowerCase();
     const user = await this.usersRepository.findOne({
-      where: { email: email },
+      where: { email: normalizedEmail  },
     });
     if (user && (await bcrypt.compare(pass, user.password))) {
-      const { password, ...result } = user;
-      return result;
+      const result = { ...user }; // Stvaramo kopiju objekta
+      delete result.password; // Uklanjamo `password` polje
+      return result as Omit<User, 'password'>;
     }
     return null;
   }
+  
 
   async register(user: User) {
     const errors = await validate(user);
@@ -89,7 +91,7 @@ export class AuthService {
     }
   }
 
-  async login(user: UserDto) {
+  async login(user: Omit<UserDto, 'password'>) {
     user.email = user.email.toLowerCase();
     const userInDb: User = await this.usersRepository
       .createQueryBuilder('user')

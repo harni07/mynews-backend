@@ -12,27 +12,33 @@ export class BookmarksService {
   ) {}
 
   async addBookmark(userId: number, bookmarkData: BookmarkDto): Promise<Bookmark> {
-    const sanitizedBookmarkData: Partial<Bookmark> = {
-      title: bookmarkData.title || 'Unknown',
-      url: bookmarkData.url || 'Unknown',
-      urlToImage: bookmarkData.urlToImage || 'Unknown',
-      author: bookmarkData.author || 'Unknown',
-      category: bookmarkData.category || 'Unknown',
-    };
-
-    const bookmark = this.bookmarksRepository.create({
-      ...sanitizedBookmarkData,
-      userId,
-    });
-
-    return this.bookmarksRepository.save(bookmark);
+    try {
+      const bookmark = this.bookmarksRepository.create({
+        ...bookmarkData,
+        userId,
+      });
+      return this.bookmarksRepository.save(bookmark);
+    } catch (error) {
+      throw new Error('Error saving bookmark');
+    }
   }
 
   async removeBookmark(userId: number, bookmarkId: number): Promise<void> {
-    await this.bookmarksRepository.delete({ id: bookmarkId, userId });
+    try {
+      const result = await this.bookmarksRepository.delete({ id: bookmarkId, userId });
+      if (result.affected === 0) {
+        throw new Error('Bookmark not found');
+      }
+    } catch (error) {
+      throw new Error('Error removing bookmark');
+    }
   }
 
   async getUserBookmarks(userId: number): Promise<Bookmark[]> {
-    return this.bookmarksRepository.find({ where: { userId } });
+    try {
+      return this.bookmarksRepository.find({ where: { userId } });
+    } catch (error) {
+      throw new Error('Error fetching bookmarks');
+    }
   }
 }
