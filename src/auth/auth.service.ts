@@ -29,8 +29,8 @@ export class AuthService {
       where: { email: normalizedEmail  },
     });
     if (user && (await bcrypt.compare(pass, user.password))) {
-      const result = { ...user }; // Stvaramo kopiju objekta
-      delete result.password; // Uklanjamo `password` polje
+      const result = { ...user };
+      delete result.password;
       return result as Omit<User, 'password'>;
     }
     return null;
@@ -55,7 +55,6 @@ export class AuthService {
       const hashedPassword = await bcrypt.hash(user.password, 10);
       user.password = hashedPassword;
 
-      // Generate activation token
       const activationToken = uuid.v4();
       user.activationToken = activationToken;
 
@@ -142,7 +141,7 @@ export class AuthService {
       },
     });
 
-    const url = `http://localhost:3000//auth/activate/${token}`;
+    const url = `http://localhost:3000/auth/activate/${token}`;
     const htmlContent = `
         <!DOCTYPE html>
         <html lang="en">
@@ -209,7 +208,7 @@ export class AuthService {
         </html>
         `;
 
-    await transporter.sendMail({
+    transporter.sendMail({
       from: 'My News <no-reply@mynews.com>',
       to: email,
       subject: 'Activate your account',
@@ -227,7 +226,6 @@ export class AuthService {
       throw new NotFoundException('User with this email does not exist');
     }
 
-    // generate and save password reset token
     const resetToken = uuid.v4();
     user.resetToken = resetToken;
     await this.usersRepository.save(user);
@@ -239,7 +237,7 @@ export class AuthService {
         pass: 'qxta yeyl drpx qvpq',
       },
     });
-    const url = `http://localhost:3000//reset-password/${resetToken}`;
+    const url = `http://localhost:3000/reset-password/${resetToken}`;
 
     const htmlContent = `
         <!DOCTYPE html>
@@ -307,7 +305,7 @@ export class AuthService {
         </html>
         `;
 
-    await transporter.sendMail({
+    transporter.sendMail({
       from: 'Test <no-reply@test.com>',
       to: email,
       subject: 'Rest your password',
@@ -328,17 +326,15 @@ export class AuthService {
       throw new NotFoundException('Invalid password reset token');
     }
 
-    // validate the new password
     if (newPassword.length < 8) {
       throw new BadRequestException(
         'Password must be at least 8 characters long',
       );
     }
 
-    // hash and save the new password
     const hashedPassword = await bcrypt.hash(newPassword, 10);
     user.password = hashedPassword;
-    user.resetToken = null; // clear the password reset token
+    user.resetToken = null; 
     await this.usersRepository.save(user);
     return {
       message:

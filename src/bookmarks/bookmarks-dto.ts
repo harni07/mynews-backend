@@ -19,5 +19,18 @@ export class BookmarkDto {
 
   @IsOptional()
   @IsString()
+  publishedAt?: string; 
+
+  @IsOptional()
+  @IsString()
+  description?: string; 
+
+  @IsOptional()
+  @IsString()
+  content?: string; 
+
+
+  @IsOptional()
+  @IsString()
   category?: string;
 }

@@ -43,6 +43,9 @@ describe('BookmarksController', () => {
         urlToImage: null,
         author: null,
         category: null,
+        content: null,      
+        description: null, 
+        publishedAt: null,  
       };
 
       const mockUser: User = {
@@ -67,8 +70,12 @@ describe('BookmarksController', () => {
         urlToImage: null,
         author: null,
         category: null,
+        content: null,
+        description: null,
+        publishedAt: null,   
         createdAt: new Date(),
       };
+      
 
       mockBookmarksService.addBookmark.mockResolvedValue(mockBookmark);
 
@@ -123,18 +130,22 @@ describe('BookmarksController', () => {
             updatedAt: new Date(),
             resetToken: null,
           };
-                const mockBookmarks: Bookmark[] = [
-        {
-          id: 1,
-          userId: 1,
-          title: 'Test Bookmark',
-          url: 'http://example.com',
-          urlToImage: null,
-          author: null,
-          category: null,
-          createdAt: new Date(),
-        },
-      ];
+        const mockBookmarks: Bookmark[] = [
+            {
+              id: 1,
+              userId: 1,
+              title: 'Test Bookmark',
+              url: 'http://example.com',
+              urlToImage: null,
+              author: null,
+              category: null,
+              content: null,
+              description: null,
+              publishedAt: null,
+              createdAt: new Date(),
+            },
+          ];
+          
 
       mockBookmarksService.getUserBookmarks.mockResolvedValue(mockBookmarks);
 

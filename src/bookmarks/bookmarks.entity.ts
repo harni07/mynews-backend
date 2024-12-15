@@ -23,6 +23,15 @@ export class Bookmark {
   @Column({ nullable: true })
   category?: string;
 
+  @Column({ nullable: true })
+  content?: string;
+  
+  @Column({ nullable: true })
+  description?: string;
+
+  @Column({ nullable: true })
+  publishedAt?: string;
+
   @CreateDateColumn()
   createdAt: Date;
 }

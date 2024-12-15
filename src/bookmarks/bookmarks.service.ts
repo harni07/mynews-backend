@@ -36,9 +36,16 @@ export class BookmarksService {
 
   async getUserBookmarks(userId: number): Promise<Bookmark[]> {
     try {
-      return this.bookmarksRepository.find({ where: { userId } });
+        const bookmarks = await this.bookmarksRepository.find({
+            select: [
+                'urlToImage', 'title', 'author', 'publishedAt', 'url', 
+                'description', 'content', 'category'
+            ],
+            where: { userId }
+        });
+        return bookmarks;
     } catch (error) {
-      throw new Error('Error fetching bookmarks');
+        throw new Error('Error fetching bookmarks');
     }
   }
 }
